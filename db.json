@@ -1,0 +1,118 @@
+{
+  "profile": [
+    {
+      "id": 1,
+      "name": "Muhammed Yusuf Akar",
+      "profession": "çiftçi / hayvan üreticisi",
+      "location": "Türkiye / Aydın / akbük",
+      "farmName": "Muhammed Yusuf'un çiftliği",
+      "confirmedSeller": true,
+      "confirmedSellerExpirationDate": "2025-09-29",
+      "profileImage": "/placeholder.svg?height=200&width=200",
+      "backgroundImage": "/placeholder.svg?height=300&width=1200"
+    },
+    {
+      "id": 2,
+      "name": "Mauro Icardi",
+      "profession": "çiftçi / hayvan üreticisi",
+      "location": "Türkiye / Aydın / akbük",
+      "farmName": "Muhammed Yusuf'un çiftliği",
+      "confirmedSeller": true,
+      "confirmedSellerExpirationDate": "2025-09-29",
+      "profileImage": "/placeholder.svg?height=200&width=200",
+      "backgroundImage": "/placeholder.svg?height=300&width=1200"
+    },
+    {
+      "id": 3,
+      "name": "İbrahim Doğan",
+      "profession": "çiftçi / hayvan üreticisi",
+      "location": "Türkiye / Aydın / akbük",
+      "farmName": "Muhammed Yusuf'un çiftliği",
+      "confirmedSeller": true,
+      "confirmedSellerExpirationDate": "2025-09-29",
+      "profileImage": "/placeholder.svg?height=200&width=200",
+      "backgroundImage": "/placeholder.svg?height=300&width=1200"
+    }
+  ],
+  "statistics": [
+    {
+      "id": 1,
+      "postViews": 393,
+      "followers": 456,
+      "profileViews": 362,
+      "searchViews": 62
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "profileImg": "/placeholder.svg",
+      "userName": "Yusuf Akar",
+      "title": "Başlık... Lorem ipsum",
+      "content": "Lorem ipsum...",
+      "image": "/placeholder.svg"
+    },
+    {
+      "id": 2,
+      "profileImg": "/placeholder.svg",
+      "userName": "İbrahim Doğan",
+      "title": "Başlık2... Lorem ipsum",
+      "content": "Lorem ipsum...",
+      "image": "/placeholder.svg"
+    },
+    {
+      "id": 3,
+      "profileImg": "/placeholder.svg",
+      "userName": "Icardi",
+      "title": "Başlık3... Lorem ipsum",
+      "content": "Lorem ipsum...",
+      "image": "/placeholder.svg"
+    },
+    {
+      "id": 4,
+      "profileImg": "/placeholder.svg",
+      "userName": "sssss sss",
+      "title": "Başlık4... Lorem ipsum",
+      "content": "Lorem ipsum...",
+      "image": "/placeholder.svg"
+    },
+    {
+      "id": 5,
+      "profileImg": "/placeholder.svg",
+      "userName": "aaaa sss",
+      "title": "Başlık4... Lorem ipsum",
+      "content": "Lorem ipsum...",
+      "image": "/placeholder.svg"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "profileImg": "/placeholder.svg",
+      "userName": "Yusuf Akar",
+      "starRate": 5,
+      "comment": "Lorem ipsum..."
+    },
+    {
+      "id": 2,
+      "profileImg": "/placeholder.svg",
+      "userName": "Yusuf Akar",
+      "starRate": 5,
+      "comment": "Lorem ipsum..."
+    },
+    {
+      "id": 3,
+      "profileImg": "/placeholder.svg",
+      "userName": "Yusuf Akar",
+      "starRate": 5,
+      "comment": "Lorem ipsum..."
+    },
+    {
+      "id": 4,
+      "profileImg": "/placeholder.svg",
+      "userName": "Yusuf Akar",
+      "starRate": 5,
+      "comment": "Lorem ipsum..."
+    }
+  ]
+}
