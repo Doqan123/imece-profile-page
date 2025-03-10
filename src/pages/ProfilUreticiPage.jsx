@@ -3,7 +3,9 @@ import AboutSection from "@/components/AboutSection.jsx";
 import ProfilGiris from "../components/ProfilGiris.jsx";
 import ProfileStatistics from "@/components/ProfileStatistics.jsx";
 import Posts from "@/components/Posts.jsx";
-import UserComments from "@/components/UserComments.jsx";
+import Comments from "@/components/Comments.jsx";
+
+
 
 export default function ProfilUreticiPage() {
 
@@ -22,7 +24,9 @@ export default function ProfilUreticiPage() {
             <ProfileStatistics />
             <AboutSection />
             <Posts />
-            <UserComments />
+            <Comments/>
+ 
+         
             <p className="mt-10">Satıştaki ürünler</p>
             
             

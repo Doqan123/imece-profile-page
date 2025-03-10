@@ -1,25 +1,28 @@
 "use client"
 
-import { useState, useRef, useCallback } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { Pencil, X, Camera, Upload, Check } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-
 import { format } from 'date-fns'
-
 import axios from "axios"
+import ProfileModal from './ProfileModal';
+
+// API için temel URL - ortamlara göre değiştirilebilir
+const API_BASE_URL = "http://localhost:3001";
 
 export default function ProfileGiris() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [saveSuccess, setSaveSuccess] = useState(false)
+  const [saveError, setSaveError] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
   const [profileData, setProfileData] = useState({
-    name: "Muhammed Yusuf Akar",
-    profession: "çiftçi / hayvan üreticisi",
-    location: "Türkiye / Aydın / akbük",
-    farmName: "Muhammed Yusuf'un çiftliği",
-    confirmedSeller: true,
-    confirmedSellerExpirationDate: new Date("2025-09-29"),
+    id: 1, // Profil kimliği - db.json'daki ilk öğe
+    name: "",
+    profession: "",
+    location: "",
+    farmName: "",
+    confirmedSeller: false,
+    confirmedSellerExpirationDate: new Date(),
     profileImage: "/placeholder.svg?height=200&width=200",
     backgroundImage: "/placeholder.svg?height=300&width=1200",
     profileImageFile: null,
@@ -31,8 +34,46 @@ export default function ProfileGiris() {
   const profileImageInputRef = useRef(null)
   const backgroundImageInputRef = useRef(null)
 
+  // İlk yükleme için profil verilerini getir
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        setIsLoading(true);
+        // JSON Server'da id=1 olan profili al
+        // Eğer profile/2 Seçersek db.json'daki 2. profili alır.
+        const response = await axios.get(`${API_BASE_URL}/profile/1`);
+        
+        // API yanıtı bir obje olmalı
+        if (response.data) {
+          const profileFromApi = response.data;
+          
+          // Tarih formatını düzelt
+          const expirationDate = profileFromApi.confirmedSellerExpirationDate 
+            ? new Date(profileFromApi.confirmedSellerExpirationDate) 
+            : new Date();
+          
+          setProfileData(prev => ({
+            ...prev,
+            ...profileFromApi,
+            confirmedSellerExpirationDate: expirationDate
+          }));
+        }
+      } catch (error) {
+        console.error("Profil verileri alınamadı:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
   const handleOpenModal = () => {
     setIsModalOpen(true)
+    // Reset form state
+    setSaveSuccess(false)
+    setSaveError(null)
+    
     // Reset previews when opening modal
     setProfileData(prev => ({
       ...prev,
@@ -52,33 +93,50 @@ export default function ProfileGiris() {
   
     try {
       setIsSaving(true);
-  
-      // State güncellemesi
-      setProfileData(prev => ({
-        ...prev,
-        profileImage: profileData.profileImagePreview || prev.profileImage,
-        backgroundImage: profileData.backgroundImagePreview || prev.backgroundImage
-      }));
-  
-      // Axios ile db.json'a güncelleme isteği gönder
-      const response = await axios.patch('http://localhost:3001/profile', {
+      setSaveSuccess(false);
+      setSaveError(null);
+      
+      // Güncellenmiş profil verileri
+      const updatedProfile = {
         name: profileData.name,
         profession: profileData.profession,
         location: profileData.location,
         farmName: profileData.farmName,
+        confirmedSeller: profileData.confirmedSeller,
+        confirmedSellerExpirationDate: profileData.confirmedSellerExpirationDate.toISOString().split('T')[0],
         profileImage: profileData.profileImagePreview || profileData.profileImage,
         backgroundImage: profileData.backgroundImagePreview || profileData.backgroundImage
-      });
+      };
+  
+      // JSON Server'a PUT isteği gönder (ID ile)
+      const response = await axios.put(`${API_BASE_URL}/profile/1`, updatedProfile);
+      
       // Başarılı yanıt kontrolü
       if (response.status === 200) {
-        setIsModalOpen(false);
+        // State'i güncelle
+        setProfileData(prev => ({
+          ...prev,
+          ...updatedProfile,
+          profileImagePreview: null,
+          backgroundImagePreview: null,
+          profileImageFile: null,
+          backgroundImageFile: null
+        }));
+        
+        setSaveSuccess(true);
+        
+        // Bildirimi göster ve modali kapat
+        setTimeout(() => {
+          setIsModalOpen(false);
+        }, 1500);
+        
         console.log("Profil güncellendi: Profil bilgileriniz başarıyla kaydedildi.");
       } else {
         throw new Error("Profil güncellenirken bir hata oluştu.");
       }
     } catch (error) {
       console.error("Error saving profile:", error);
-      console.log("Hata: Profil bilgileriniz kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.");
+      setSaveError("Profil bilgileriniz kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.");
     } finally {
       setIsSaving(false);
     }
@@ -129,6 +187,21 @@ export default function ProfileGiris() {
   const triggerBackgroundImageUpload = useCallback(() => {
     backgroundImageInputRef.current?.click()
   }, [])
+
+  // Yükleme durumu için gösterilecek içerik
+  if (isLoading) {
+    return (
+      <div className="max-w-[1580px] min-w-[428px] h-[306px] md:h-[380px] lg:h-[622px] mx-auto bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 font-primary flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
+          <svg className="animate-spin h-12 w-12 text-[#22ff22]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <p className="mt-4 text-lg text-[#1c274c]">Profil bilgileri yükleniyor...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-[1580px] min-w-[428px] h-[306px] md:h-[380px] lg:h-[622px] mx-auto bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 font-primary">
@@ -187,7 +260,9 @@ export default function ProfileGiris() {
             )}
 
             {/* Confirmed Seller Expiration Date */}
-            <div className="text-[10px] lg:text-base font-medium lg:ml-16 lg:mt-1 text-[#1C274C] kanit"> {format(profileData.confirmedSellerExpirationDate, 'dd/MM/yyyy')} Tarihine kadar geçerli</div>
+            <div className="text-[10px] lg:text-base font-medium lg:ml-16 lg:mt-1 text-[#1C274C] kanit">
+              {format(profileData.confirmedSellerExpirationDate, 'dd/MM/yyyy')} Tarihine kadar geçerli
+            </div>
           </div>
         </div>
 
@@ -208,26 +283,47 @@ export default function ProfileGiris() {
         </div>
       </div>
 
-      {/* Edit Profile Modal */}
+      {/* Custom Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-md relative animate-in fade-in zoom-in duration-300">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+          <div 
+            className="bg-white rounded-2xl w-full max-w-md relative animate-in fade-in zoom-in duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center p-6 border-b">
               <h2 className="text-2xl font-bold text-[#1c274c]">Profili düzenle</h2>
-              <button onClick={handleCloseModal} className="text-[#898989] hover:text-[#1c274c]">
+              <button 
+                onClick={handleCloseModal} 
+                className="text-[#898989] hover:text-[#1c274c] transition-colors p-1 rounded-full hover:bg-gray-100"
+              >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              {/* İşlem bildirimleri */}
+              {saveSuccess && (
+                <div className="bg-green-50 text-green-800 px-4 py-3 rounded-lg flex items-center gap-2 animate-in fade-in duration-300">
+                  <Check className="w-5 h-5 text-green-500" />
+                  <p>Profil bilgileriniz başarıyla kaydedildi!</p>
+                </div>
+              )}
+              
+              {saveError && (
+                <div className="bg-red-50 text-red-800 px-4 py-3 rounded-lg flex items-center gap-2 animate-in fade-in duration-300">
+                  <X className="w-5 h-5 text-red-500" />
+                  <p>{saveError}</p>
+                </div>
+              )}
+
               {/* Image Upload Section */}
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   {/* Profile Image Upload */}
                   <div className="space-y-2">
-                    <Label htmlFor="profileImage" className="text-[#1c274c] text-sm">
+                    <label htmlFor="profileImage" className="text-[#1c274c] text-sm font-medium block">
                       Profil Fotoğrafı
-                    </Label>
+                    </label>
                     <div
                       className="relative h-32 w-32 rounded-xl overflow-hidden border-2 border-dashed border-[#d0d0d0] mx-auto cursor-pointer hover:border-[#22ff22] transition-colors"
                       onClick={triggerProfileImageUpload}
@@ -262,9 +358,9 @@ export default function ProfileGiris() {
 
                   {/* Background Image Upload */}
                   <div className="space-y-2">
-                    <Label htmlFor="backgroundImage" className="text-[#1c274c] text-sm">
+                    <label htmlFor="backgroundImage" className="text-[#1c274c] text-sm font-medium block">
                       Arkaplan Fotoğrafı
-                    </Label>
+                    </label>
                     <div
                       className="relative h-32 w-full rounded-xl overflow-hidden border-2 border-dashed border-[#d0d0d0] cursor-pointer hover:border-[#22ff22] transition-colors"
                       onClick={triggerBackgroundImageUpload}
@@ -303,70 +399,69 @@ export default function ProfileGiris() {
 
               {/* Profile Info Fields */}
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-[#1c274c] font-medium">
+                <label htmlFor="name" className="text-[#1c274c] font-medium block">
                   İsim Soyisim
-                </Label>
-                <Input
+                </label>
+                <input
                   id="name"
                   name="name"
                   value={profileData.name}
                   onChange={handleChange}
-                  className="border-[#d0d0d0] focus:border-[#22ff22] focus:ring-[#22ff22] rounded-lg"
+                  className="w-full px-3 py-2 border border-[#d0d0d0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#22ff22] focus:border-[#22ff22] transition-colors"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="profession" className="text-[#1c274c] font-medium">
+                <label htmlFor="profession" className="text-[#1c274c] font-medium block">
                   Meslek
-                </Label>
-                <Input
+                </label>
+                <input
                   id="profession"
                   name="profession"
                   value={profileData.profession}
                   onChange={handleChange}
-                  className="border-[#d0d0d0] focus:border-[#22ff22] focus:ring-[#22ff22] rounded-lg"
+                  className="w-full px-3 py-2 border border-[#d0d0d0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#22ff22] focus:border-[#22ff22] transition-colors"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="location" className="text-[#1c274c] font-medium">
+                <label htmlFor="location" className="text-[#1c274c] font-medium block">
                   Konum
-                </Label>
-                <Input
+                </label>
+                <input
                   id="location"
                   name="location"
                   value={profileData.location}
                   onChange={handleChange}
-                  className="border-[#d0d0d0] focus:border-[#22ff22] focus:ring-[#22ff22] rounded-lg"
+                  className="w-full px-3 py-2 border border-[#d0d0d0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#22ff22] focus:border-[#22ff22] transition-colors"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="farmName" className="text-[#1c274c] font-medium">
+                <label htmlFor="farmName" className="text-[#1c274c] font-medium block">
                   Çiftlik İsmi
-                </Label>
-                <Input
+                </label>
+                <input
                   id="farmName"
                   name="farmName"
                   value={profileData.farmName}
                   onChange={handleChange}
-                  className="border-[#d0d0d0] focus:border-[#22ff22] focus:ring-[#22ff22] rounded-lg"
+                  className="w-full px-3 py-2 border border-[#d0d0d0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#22ff22] focus:border-[#22ff22] transition-colors"
                 />
               </div>
 
               <div className="flex justify-end gap-4 pt-4">
-                <Button
+                <button
                   type="button"
-                  variant="outline"
                   onClick={handleCloseModal}
-                  className="rounded-full px-6 border-[#d0d0d0] text-[#717171]"
+                  className="px-6 py-2 rounded-full border border-[#d0d0d0] text-[#717171] hover:bg-gray-50 transition-colors disabled:opacity-50"
                   disabled={isSaving}
                 >
                   İptal
-                </Button>
-                <Button
+                </button>
+                <button
                   type="submit"
-                  className="rounded-full px-6 bg-[#22ff22] text-[#1c274c] hover:bg-[#1ddd1d]"
+                  className="px-6 py-2 rounded-full bg-[#22ff22] text-[#1c274c] hover:bg-[#1ddd1d] transition-colors disabled:opacity-50 flex items-center"
                   disabled={isSaving}
                 >
                   {isSaving ? (
@@ -396,7 +491,7 @@ export default function ProfileGiris() {
                   ) : (
                     "Kaydet"
                   )}
-                </Button>
+                </button>
               </div>
             </form>
           </div>

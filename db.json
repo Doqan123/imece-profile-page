@@ -1,18 +1,18 @@
 {
   "profile": [
     {
-      "id": 1,
       "name": "Muhammed Yusuf Akar",
       "profession": "çiftçi / hayvan üreticisi",
       "location": "Türkiye / Aydın / akbük",
       "farmName": "Muhammed Yusuf'un çiftliği",
       "confirmedSeller": true,
       "confirmedSellerExpirationDate": "2025-09-29",
-      "profileImage": "/placeholder.svg?height=200&width=200",
-      "backgroundImage": "/placeholder.svg?height=300&width=1200"
+      "profileImage": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBzbGljZSI+DQogIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmMGYwZjAiIC8+DQogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiM4ODgiPlBsYWNlaG9sZGVyPC90ZXh0Pg0KPC9zdmc+DQoNCg==",
+      "backgroundImage": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBzbGljZSI+DQogIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmMGYwZjAiIC8+DQogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiM4ODgiPlBsYWNlaG9sZGVyPC90ZXh0Pg0KPC9zdmc+DQoNCg==",
+      "id": "1"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Mauro Icardi",
       "profession": "çiftçi / hayvan üreticisi",
       "location": "Türkiye / Aydın / akbük",
@@ -23,7 +23,7 @@
       "backgroundImage": "/placeholder.svg?height=300&width=1200"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "İbrahim Doğan",
       "profession": "çiftçi / hayvan üreticisi",
       "location": "Türkiye / Aydın / akbük",
@@ -36,7 +36,7 @@
   ],
   "statistics": [
     {
-      "id": 1,
+      "id": "1",
       "postViews": 393,
       "followers": 456,
       "profileViews": 362,
@@ -45,7 +45,7 @@
   ],
   "posts": [
     {
-      "id": 1,
+      "id": "1",
       "profileImg": "/placeholder.svg",
       "userName": "Yusuf Akar",
       "title": "Başlık... Lorem ipsum",
@@ -53,7 +53,7 @@
       "image": "/placeholder.svg"
     },
     {
-      "id": 2,
+      "id": "2",
       "profileImg": "/placeholder.svg",
       "userName": "İbrahim Doğan",
       "title": "Başlık2... Lorem ipsum",
@@ -61,7 +61,7 @@
       "image": "/placeholder.svg"
     },
     {
-      "id": 3,
+      "id": "3",
       "profileImg": "/placeholder.svg",
       "userName": "Icardi",
       "title": "Başlık3... Lorem ipsum",
@@ -69,7 +69,7 @@
       "image": "/placeholder.svg"
     },
     {
-      "id": 4,
+      "id": "4",
       "profileImg": "/placeholder.svg",
       "userName": "sssss sss",
       "title": "Başlık4... Lorem ipsum",
@@ -77,7 +77,7 @@
       "image": "/placeholder.svg"
     },
     {
-      "id": 5,
+      "id": "5",
       "profileImg": "/placeholder.svg",
       "userName": "aaaa sss",
       "title": "Başlık4... Lorem ipsum",
@@ -87,32 +87,35 @@
   ],
   "comments": [
     {
-      "id": 1,
-      "profileImg": "/placeholder.svg",
-      "userName": "Yusuf Akar",
-      "starRate": 5,
-      "comment": "Lorem ipsum..."
+      "id":"1",
+      "name": "İbrahim Doğan",
+      "rating": 5,
+      "comment": "Lorem ipsum Lorem ipsum"
+
     },
     {
-      "id": 2,
-      "profileImg": "/placeholder.svg",
-      "userName": "Yusuf Akar",
-      "starRate": 5,
-      "comment": "Lorem ipsum..."
+      "id":"2",
+      "name": "Avril Lavinge",
+      "rating": 5,
+      "comment": "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem Lorem ipsum"
+
     },
     {
-      "id": 3,
-      "profileImg": "/placeholder.svg",
-      "userName": "Yusuf Akar",
-      "starRate": 5,
-      "comment": "Lorem ipsum..."
+      "id":"3",
+      "name": "Avril Lavinge",
+      "rating": 5,
+      "comment": "Lorem ipsum Lorem ipsum"
+
     },
     {
-      "id": 4,
-      "profileImg": "/placeholder.svg",
-      "userName": "Yusuf Akar",
-      "starRate": 5,
-      "comment": "Lorem ipsum..."
+      "id":"4",
+      "name": "Avril Lavinge",
+      "rating": 3,
+      "comment": "Lorem ipsum Lorem ipsum"
+
     }
+    
   ]
+
+
 }
